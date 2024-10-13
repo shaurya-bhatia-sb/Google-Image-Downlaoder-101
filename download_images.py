@@ -2,7 +2,7 @@ from google_images_search import GoogleImagesSearch
 import os
 
 # Your API key and CX (custom search engine ID)
-gis = GoogleImagesSearch("API key", "CX")
+gis = GoogleImagesSearch(" Your API key", "your custom search engine ID")
 
 # Define the download path at the beginning
 download_path = "./images"
