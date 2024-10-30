@@ -1,11 +1,15 @@
-Clone the Repository:
+_Clone the Repository_:
   git clone https://github.com/yourusername/your-repo-name.git
+  
   cd your-repo-name
 
- Install Required Packages:
-  pip install -r requirements.txt
 
-Configure API Keys and Email: Open app.py and replace placeholders:
+ _Install Required Packages_: 
+ 
+ pip install -r requirements.txt
+
+
+_Configure API Keys and Email: Open app.py and replace placeholders:_
 
   API_KEY = 'YOUR_GOOGLE_API_KEY'
   
@@ -15,5 +19,7 @@ Configure API Keys and Email: Open app.py and replace placeholders:
   
   SENDER_PASSWORD = 'your_email_password'
 
-Run the App:
+
+_Run the App_:
+
   python WebApp.py
