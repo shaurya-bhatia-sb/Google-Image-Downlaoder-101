@@ -22,7 +22,7 @@ download_path = "./images"
 def send_email(subject, body, to_email):
     msg = MIMEMultipart()
     msg['Subject'] = subject
-    msg['From'] = 'sbhatia_be22@thapar.edu'  # Replace with your email
+    msg['From'] = 'Your email id'  # Replace with your email
     msg['To'] = to_email
     msg.attach(MIMEText(body, 'plain'))
 
@@ -39,8 +39,8 @@ def send_email(subject, body, to_email):
     try:
         with smtplib.SMTP('smtp.gmail.com', 587) as server:
             server.starttls()  # Secure the connection
-            server.login('sbhatia_be22@thapar.edu', 'hjwb dcux swxy bcyn')  # Replace with your app password
-            server.sendmail('sbhatia_be22@thapar.edu', to_email, msg.as_string())
+            server.login('Your email id', 'Your specific app password')  # Replace with your app password
+            server.sendmail('Your email id', to_email, msg.as_string())
             print("Email with images sent successfully!")
     except Exception as e:
         print(f"Failed to send email: {e}")
@@ -91,7 +91,7 @@ def index():
         except Exception as e:
             flash(f'Error: {str(e)}', 'danger')
 
-    return render_template('index1.html')
+    return render_template('index.html')
 
 
 @app.route('/success')
