@@ -1,0 +1,4 @@
+Flask==2.3.2
+google_images_search==1.0.2
+smtplib==0.2.1
+email==6.0.0
