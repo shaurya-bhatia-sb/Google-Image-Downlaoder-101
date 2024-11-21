@@ -47,6 +47,14 @@ SENDER_EMAIL = 'your_email@example.com'
 SENDER_PASSWORD = 'your_email_password'
   ```
 
+## Web Preview
+
+### Homepage
+![Homepage](Homepage.png)
+
+### Success
+![Success](Success.png)
+
 ## Usage
 1.  Launch the app and enter the desired search tag (e.g., "car").
 2.  Specify the number of images to download.
