@@ -6,51 +6,50 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
 import os
+import zipfile
 
 app = Flask(__name__)
-app.secret_key = 'Your Secret key'  # Replace with a secure key for Flask sessions
+app.secret_key = 'App secret key'  # Replace with a secure key for Flask sessions
 
-# Google Images Search Configuration
-API_KEY = ' API KEY'  # Replace with your Google API key
-CX_ID = 'CUSTOM SEARCH ENGINE ID'  # Replace with your Custom Search Engine ID
+# Google Images Search configuration
+API_KEY = 'Google API key'  # Replace with your Google API key
+CX_ID = 'Custom Search Engine ID'  # Replace with your Custom Search Engine ID
 gis = GoogleImagesSearch(API_KEY, CX_ID)
 
-# Path to download images
+# Paths
 download_path = "./images"
+zip_path = "./images.zip"
 
 
 def send_email(subject, body, to_email):
     msg = MIMEMultipart()
     msg['Subject'] = subject
-    msg['From'] = 'Your email id'  # Replace with your email
+    msg['From'] = 'sender email'  # Replace with your email
     msg['To'] = to_email
     msg.attach(MIMEText(body, 'plain'))
 
-    # Attach each image in the download directory
-    for filename in os.listdir(download_path):
-        file_path = os.path.join(download_path, filename)
-        with open(file_path, 'rb') as attachment:
-            part = MIMEBase('application', 'octet-stream')
-            part.set_payload(attachment.read())
-            encoders.encode_base64(part)
-            part.add_header('Content-Disposition', f'attachment; filename= {filename}')
-            msg.attach(part)
+    # Attach the ZIP file
+    with open(zip_path, 'rb') as zip_file:
+        part = MIMEBase('application', 'octet-stream')
+        part.set_payload(zip_file.read())
+        encoders.encode_base64(part)
+        part.add_header('Content-Disposition', f'attachment; filename= images.zip')
+        msg.attach(part)
 
     try:
         with smtplib.SMTP('smtp.gmail.com', 587) as server:
             server.starttls()  # Secure the connection
-            server.login('Your email id', 'Your specific app password')  # Replace with your app password
-            server.sendmail('Your email id', to_email, msg.as_string())
-            print("Email with images sent successfully!")
+            server.login('sender email', 'app password')  # Replace with your app password
+            server.sendmail('sender email', to_email, msg.as_string())
+            print("Email with ZIP file sent successfully!")
     except Exception as e:
         print(f"Failed to send email: {e}")
-
 
 
 def download_images(query, num_images):
     search_params = {
         "q": query,
-        "num": num_images,
+        "num": min(num_images, 1000),  # Limit to 1000 images
         "fileType": "jpg",
         "imgType": "photo",
     }
@@ -67,6 +66,17 @@ def download_images(query, num_images):
         image.download(download_path)
         print(f"Downloaded: {image.url} to {download_path}")
 
+    # Create a ZIP file
+    with zipfile.ZipFile(zip_path, 'w') as zipf:
+        for foldername, subfolders, filenames in os.walk(download_path):
+            for filename in filenames:
+                file_path = os.path.join(foldername, filename)
+                zipf.write(file_path, os.path.relpath(file_path, download_path))
+    
+    # Clean up individual images
+    for file in os.listdir(download_path):
+        os.remove(os.path.join(download_path, file))
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -79,14 +89,14 @@ def index():
             # Download images based on the search query and number of images
             download_images(query, num_images)
 
-            # Send an email notification with the images as attachments to the user's email
+            # Send an email notification with the ZIP file as an attachment
             send_email(
                 subject='Images Downloaded',
                 body=f'Successfully downloaded {num_images} images for query: {query}',
                 to_email=user_email
             )
 
-            flash('Images downloaded and email with images sent!', 'success')
+            flash('Images downloaded and email with ZIP file sent!', 'success')
             return redirect(url_for('success'))
         except Exception as e:
             flash(f'Error: {str(e)}', 'danger')
