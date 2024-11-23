@@ -71,7 +71,7 @@ SENDER_PASSWORD = 'your_email_password'
 ## Contributing
 Feel free to fork the repository and submit pull requests. If you encounter any bugs or have suggestions for improvements, please open an issue.
   
-
+Made with ❤️ by Shaurya Bhatia
 
 
 
