@@ -55,6 +55,9 @@ SENDER_PASSWORD = 'your_email_password'
 ### Success
 ![Success](Success.png)
 
+### Sent Mail
+![Mail](Mail.png)
+
 ## Usage
 1.  Launch the app and enter the desired search tag (e.g., "car").
 2.  Specify the number of images to download.
